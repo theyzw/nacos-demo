@@ -43,6 +43,11 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.yk</groupId>
+      <artifactId>yk-common-core</artifactId>
+    </dependency>
+
     <!-- Common Security-->
     <!--<dependency>
       <groupId>com.yk</groupId>
