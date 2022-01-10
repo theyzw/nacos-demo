@@ -15,6 +15,7 @@
     <module>yk-common-core</module>
     <module>yk-common-swagger</module>
     <module>yk-common-redis</module>
+    <module>yk-common-security</module>
   </modules>
 
 
