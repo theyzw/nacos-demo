@@ -2,7 +2,7 @@ package com.yk.common.core.domain;
 
 import com.yk.common.core.code.ApiCode;
 import com.yk.common.core.enums.EnvType;
-import com.yk.common.core.exception.BizException;
+import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.utils.collection.MapBuilder;
 import java.io.Serializable;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class ApiResult<T> implements Serializable {
         return new ApiResult<>(ApiCode.SUCCESS, data);
     }
 
-    public static ApiResult error(BizException exception) {
+    public static ApiResult error(ServiceException exception) {
         return new ApiResult(exception.getCode() == null ? 500 : exception.getCode(), exception.getMessage());
     }
 

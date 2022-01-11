@@ -55,6 +55,8 @@
 
         <jjwt.version>0.9.1</jjwt.version>
 
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
 
     </properties>
 
@@ -197,6 +199,17 @@
                 <version>${jjwt.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
             <!-- 核心模块 -->
             <dependency>
                 <groupId>com.yk</groupId>
@@ -215,6 +228,13 @@
             <dependency>
                 <groupId>com.yk</groupId>
                 <artifactId>yk-common-redis</artifactId>
+                <version>${demo.version}</version>
+            </dependency>
+
+            <!-- 安全模块 -->
+            <dependency>
+                <groupId>com.yk</groupId>
+                <artifactId>yk-common-security</artifactId>
                 <version>${demo.version}</version>
             </dependency>
 

@@ -2,6 +2,7 @@ package com.yk.auth;
 
 //import com.ruoyi.common.security.annotation.EnableRyFeignClients;
 
+import com.yk.common.swagger.annotation.EnableCustomSwagger2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -12,6 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 //@EnableRyFeignClients
 @EnableFeignClients
+@EnableCustomSwagger2
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class YkAuthApplication {
 
