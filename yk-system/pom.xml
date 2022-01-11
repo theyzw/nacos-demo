@@ -9,15 +9,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>yk-common</artifactId>
+  <artifactId>yk-system</artifactId>
   <packaging>pom</packaging>
-  <modules>
-    <module>yk-common-core</module>
-    <module>yk-common-swagger</module>
-    <module>yk-common-redis</module>
-    <module>yk-common-security</module>
-    <module>yk-common-mybatis</module>
-  </modules>
 
 
 </project>

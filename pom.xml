@@ -10,6 +10,7 @@
     <modules>
         <module>yk-common</module>
         <module>yk-auth</module>
+        <module>yk-system</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -243,6 +244,12 @@
             <dependency>
                 <groupId>com.yk</groupId>
                 <artifactId>yk-common-security</artifactId>
+                <version>${demo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yk</groupId>
+                <artifactId>yk-common-mybatis</artifactId>
                 <version>${demo.version}</version>
             </dependency>
 
