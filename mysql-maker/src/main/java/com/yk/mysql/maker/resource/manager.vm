@@ -1,0 +1,7 @@
+package $managerPackage;
+
+import com.yk.demo.manager.BaseManager;
+import $dtoClassName;
+
+public interface $managerName extends BaseManager<$dtoName> {
+}

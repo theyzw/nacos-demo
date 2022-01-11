@@ -1,0 +1,40 @@
+package $entityPackage;
+
+#if($table.dataTypeSet)
+#foreach($item in $table.dataTypeSet)
+import $item;
+#end
+#end
+import com.yk.service.common.entity.BaseEntity;
+import $dtoClassName;
+import lombok.Data;
+
+@Data
+public class $entityName extends BaseEntity<$dtoName> {
+
+#if($table.columnKey)
+    #if($table.columnKey.columnComment)
+    /**
+     * $table.columnKey.columnComment
+     */
+    #end
+    private $table.columnKey.propertyDataType $table.columnKey.propertyName;
+#end
+
+#foreach($item in $table.columnList)
+    #if($item.columnComment)
+    /**
+     * $item.columnComment
+     */
+    #end
+    private $item.propertyDataType $item.propertyName;
+
+#end
+    public $entityName() {
+    }
+
+    public $entityName($dtoName dto) {
+        super(dto);
+    }
+
+}

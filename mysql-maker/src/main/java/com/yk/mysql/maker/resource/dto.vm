@@ -1,0 +1,39 @@
+package $dtoPackage;
+
+#if($table.dataTypeSet)
+#foreach($item in $table.dataTypeSet)
+import $item;
+#end
+#end
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class $dtoName implements Serializable {
+
+#if($table.columnKey)
+    #if($table.columnKey.columnComment)
+    /**
+     * $table.columnKey.columnComment
+     */
+    #end
+    private $table.columnKey.propertyDataType $table.columnKey.propertyName;
+#end
+
+#foreach($item in $table.columnList)
+    #if($item.columnComment)
+    /**
+     * $item.columnComment
+     */
+    #end
+    private $item.propertyDataType $item.propertyName;
+
+#end
+}

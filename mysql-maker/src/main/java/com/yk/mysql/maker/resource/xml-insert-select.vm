@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="$daoClassName">
+    <resultMap id="BaseResultMap" type="$entityClassName">
+#if($table.columnKey)
+        <id column="$table.columnKey.columnName" property="$table.columnKey.propertyName"/>
+#end
+#foreach($item in $table.columnList)
+        <result column="$item.columnName" property="$item.propertyName"#if($item.typeHandler) typeHandler="$item.typeHandler"#end/>
+#end
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into $tableName (
+        #if($table.columnKey)
+            `$table.columnKey.columnName`,
+        #end
+        #set($flag=true)
+        #foreach($item in $table.columnList)
+        #if($flag)
+            #set($flag=false)
+            `$item.columnName`#else,
+            `$item.columnName`#end
+        #end)
+        values (
+        #if($table.columnKey)
+            #{$table.columnKey.propertyName},
+        #end
+        #set($flag=true)
+        #foreach($item in $table.columnList)
+        #if($flag)
+            #set($flag=false)
+            #{$item.propertyName#if($item.typeHandler),typeHandler=$item.typeHandler#end}#else,
+            #{$item.propertyName#if($item.typeHandler),typeHandler=$item.typeHandler#end}#end
+        #end)
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into $tableName
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+#if($table.columnKey)
+        <if test="${table.columnKey.propertyName} != null">
+            `$table.columnKey.columnName`,
+        </if>
+#end
+#foreach($item in $table.columnList)
+        <if test="${item.propertyName} != null">
+            `$item.columnName`,
+        </if>
+#end
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+#if($table.columnKey)
+        <if test="${table.columnKey.propertyName} != null">
+            #{$table.columnKey.propertyName},
+        </if>
+#end
+#foreach($item in $table.columnList)
+        <if test="${item.propertyName} != null">
+            #{$item.propertyName#if($item.typeHandler),typeHandler=$item.typeHandler#end},
+        </if>
+#end
+        </trim>
+    </insert>
+#if($table.columnKey)
+
+    <update id="updateSelective">
+        update $tableName
+        <set>
+#foreach($item in $table.columnList)
+            <if test="${item.propertyName} != null">
+                `$item.columnName`=#{${item.propertyName}#if($item.typeHandler),typeHandler=$item.typeHandler#end},
+            </if>
+#end
+        </set>
+        where `$table.columnKey.columnName`=#{${table.columnKey.propertyName}}
+    </update>
+#end
+
+    <select id="findList" resultMap="BaseResultMap">
+        select
+        *
+        from $tableName
+        <include refid="findListSql"/>
+        ORDER by $table.columnKey.columnName desc
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(*)
+        from $tableName
+        <include refid="findListSql"/>
+    </select>
+    <sql id="findListSql">
+#if($table.columnKey)
+        <where>
+            <if test="${table.columnKey.propertyName} != null">
+                and `$table.columnKey.columnName`=#{${table.columnKey.propertyName}}
+            </if>
+        #foreach($item in $table.columnList)
+            <if test="${item.propertyName} != null">
+                and `$item.columnName`=#{${item.propertyName}#if($item.typeHandler),typeHandler=$item.typeHandler#end}
+            </if>
+        #end
+        </where>
+#end
+    </sql>
+
+#if($table.columnKey)
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM $tableName
+        where `$table.columnKey.columnName`=#{${table.columnKey.propertyName}}
+    </select>
+#end
+
+#if($table.columnKey)
+    <delete id="deleteByPrimaryKey">
+        DELETE
+        FROM $tableName
+        where `$table.columnKey.columnName`=#{${table.columnKey.propertyName}}
+    </delete>
+#end
+
+</mapper>

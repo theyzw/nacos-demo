@@ -1,0 +1,26 @@
+package $queryPackage;
+
+#if($table.dataTypeSet)
+    #foreach($item in $table.dataTypeSet)
+import $item;
+    #end
+#end
+import com.yk.service.common.query.Query;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class $queryName implements Query {
+#if($table.columnKey)
+
+    private $table.columnKey.propertyDataType $table.columnKey.propertyName;
+#end
+#foreach($item in $table.columnList)
+    private $item.propertyDataType $item.propertyName;
+#end
+}
