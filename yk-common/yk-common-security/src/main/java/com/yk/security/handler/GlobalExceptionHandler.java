@@ -7,12 +7,16 @@ import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.exception.auth.NotPermissionException;
 import com.yk.common.core.exception.auth.NotRoleException;
 import com.yk.common.core.utils.StringUtils;
+import com.yk.common.core.utils.collection.MapBuilder;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -24,13 +28,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理器
- *
- * @author ruoyi
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private final static String TRUE_STR = "true";
+
+    @Value("${api.debug.enable:false}")
+    private String debugEnable;
 
     /**
      * 权限码异常
@@ -140,6 +146,20 @@ public class GlobalExceptionHandler {
     public ApiResult handleException(Exception e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
-        return ApiResult.error(e.getMessage());
+
+        Map<String, Object> exceptionInfo = getExceptionInfo(e);
+        return ApiResult.error(ApiCode.INTERNAL_SERVER_ERROR, exceptionInfo);
+    }
+
+    private Map<String, Object> getExceptionInfo(Exception e) {
+        Map<String, Object> exceptionInfo;
+        // 没有明文开启开关，不返回debug信息
+        if (!TRUE_STR.equalsIgnoreCase(debugEnable)) {
+            exceptionInfo = null;
+        } else {
+            exceptionInfo = MapBuilder.<String, Object>builder().put("exception", e.toString()).put("trace",
+                Arrays.stream(e.getStackTrace()).map(trace -> trace.toString()).collect(Collectors.toList())).build();
+        }
+        return exceptionInfo;
     }
 }

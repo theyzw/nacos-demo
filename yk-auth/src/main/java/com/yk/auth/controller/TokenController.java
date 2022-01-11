@@ -44,7 +44,6 @@ public class TokenController {
 
     @PostMapping("login")
     public ApiResult<TokenResp> login(@RequestBody @Valid LoginReq req) {
-        log.info("登录");
         // 用户登录
         LoginUser loginUser = sysLoginService.login(req.getUsername(), req.getPassword());
 
