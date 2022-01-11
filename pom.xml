@@ -11,6 +11,7 @@
         <module>yk-common</module>
         <module>yk-auth</module>
         <module>yk-system</module>
+        <module>yk-system-server</module>
     </modules>
     <packaging>pom</packaging>
 
