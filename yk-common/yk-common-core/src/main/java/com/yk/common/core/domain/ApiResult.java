@@ -1,6 +1,7 @@
 package com.yk.common.core.domain;
 
 import com.yk.common.core.code.ApiCode;
+import com.yk.common.core.constants.HttpStatus;
 import com.yk.common.core.enums.EnvType;
 import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.utils.collection.MapBuilder;
@@ -95,6 +96,10 @@ public class ApiResult<T> implements Serializable {
 
     public static ApiResult error(ApiCode code, Map<String, Object> debug) {
         return new ApiResult<>(code, null, debug);
+    }
+
+    public static ApiResult error(String msg) {
+        return new ApiResult(HttpStatus.ERROR, msg);
     }
 
     public static ApiResult error(ApiCode code, Map<String, Object> debug, String env) {

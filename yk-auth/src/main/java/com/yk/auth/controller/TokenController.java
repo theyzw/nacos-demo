@@ -10,9 +10,12 @@ import com.yk.security.model.LoginUser;
 import com.yk.security.service.TokenService;
 import io.swagger.annotations.Api;
 import java.util.Map;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +38,7 @@ public class TokenController {
     private SysLoginService sysLoginService;
 
     @PostMapping("login")
-    public ApiResult<TokenResp> login(@RequestBody LoginReq req) {
+    public ApiResult<TokenResp> login(@RequestBody @Valid LoginReq req) {
         log.info("登录");
         // 用户登录
         LoginUser loginUser = sysLoginService.login(req.getUsername(), req.getPassword());
@@ -60,6 +63,14 @@ public class TokenController {
 //        String token = SecurityUtils.getToken(request);
 
         return ApiResult.ok();
+    }
+
+    @GetMapping("test")
+    public ApiResult test(@NotNull(message = "id不能为空") Long id,
+                          @NotNull(message = "id2不能为空") Long id2) {
+//        String token = SecurityUtils.getToken(request);
+
+        return ApiResult.ok(id);
     }
 
 //    @DeleteMapping("logout")

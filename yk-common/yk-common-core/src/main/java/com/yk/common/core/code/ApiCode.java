@@ -12,9 +12,8 @@ public enum ApiCode implements BaseCodeInterface, Serializable {
     SUCCESS(200, "OK"),
     FAIL(500, "fail"),
 
-    REQUEST_PARAM_ERROR(1000, "传入参数错误"),
-    REQUEST_PARAM_MISSING(1001, "缺少参数"),
-    REQUEST_TOKEN_PARAM_MISSING(1002, "缺少登录参数"),
+    REQUEST_PARAM_ERROR(1001, "传入参数错误"),
+    REQUEST_PARAM_MISSING(1002, "缺少参数"),
     COOKIE_ERROR(1100, "cookie错误"),
     BIZ_EXCEPTION(1200, "业务异常"),
     INTERNAL_SERVER_ERROR(1300, "服务器错误"),
