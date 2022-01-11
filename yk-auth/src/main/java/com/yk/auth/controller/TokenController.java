@@ -6,10 +6,15 @@ import com.yk.auth.response.TokenResp;
 import com.yk.auth.service.SysLoginService;
 import com.yk.common.core.domain.ApiResult;
 import com.yk.common.core.text.Convert;
+import com.yk.common.core.utils.JwtUtils;
+import com.yk.common.core.utils.StringUtils;
+import com.yk.security.auth.AuthUtil;
 import com.yk.security.model.LoginUser;
 import com.yk.security.service.TokenService;
+import com.yk.security.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +52,7 @@ public class TokenController {
         loginUser.setUsername("admin");
         loginUser.setRoles(Sets.newHashSet("a", "b"));
         loginUser.setPermissions(Sets.newHashSet("aa", "bb", "cc"));
+
         // 获取登录token
         Map<String, Object> tokenMap = tokenService.createToken(loginUser);
         // 接口返回信息
@@ -59,34 +65,20 @@ public class TokenController {
     }
 
     @PostMapping("logout")
-    public ApiResult logout() {
-//        String token = SecurityUtils.getToken(request);
+    public ApiResult logout(HttpServletRequest request) {
+        String token = SecurityUtils.getToken(request);
+        if (StringUtils.isBlank(token)) {
+            return ApiResult.ok();
+        }
 
+        String username = JwtUtils.getUserName(token);
+        // 删除用户缓存记录
+        AuthUtil.logoutByToken(token);
+        // 记录用户退出日志
+        sysLoginService.logout(username);
         return ApiResult.ok();
     }
 
-    @GetMapping("test")
-    public ApiResult test(@NotNull(message = "id不能为空") Long id,
-                          @NotNull(message = "id2不能为空") Long id2) {
-//        String token = SecurityUtils.getToken(request);
-
-        return ApiResult.ok(id);
-    }
-
-//    @DeleteMapping("logout")
-//    public R<?> logout(HttpServletRequest request)
-//    {
-//        String token = SecurityUtils.getToken(request);
-//        if (StringUtils.isNotEmpty(token))
-//        {
-//            String username = JwtUtils.getUserName(token);
-//            // 删除用户缓存记录
-//            AuthUtil.logoutByToken(token);
-//            // 记录用户退出日志
-//            sysLoginService.logout(username);
-//        }
-//        return R.ok();
-//    }
 //
 //    @PostMapping("refresh")
 //    public R<?> refresh(HttpServletRequest request)

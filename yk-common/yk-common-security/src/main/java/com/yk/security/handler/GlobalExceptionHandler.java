@@ -123,22 +123,6 @@ public class GlobalExceptionHandler {
         return ApiResult.error(ApiCode.REQUEST_PARAM_ERROR, msg.toString());
     }
 
-//    /**
-//     * 内部认证异常
-//     */
-//    @ExceptionHandler(InnerAuthException.class)
-//    public AjaxResult handleInnerAuthException(InnerAuthException e) {
-//        return AjaxResult.error(e.getMessage());
-//    }
-//
-//    /**
-//     * 演示模式异常
-//     */
-//    @ExceptionHandler(DemoModeException.class)
-//    public AjaxResult handleDemoModeException(DemoModeException e) {
-//        return AjaxResult.error("演示模式，不允许操作");
-//    }
-
     /**
      * 拦截未知的运行时异常
      */
