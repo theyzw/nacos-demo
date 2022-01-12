@@ -40,8 +40,8 @@ public class MakerInsertSelect extends Maker {
             outputRootApi =
                 outputRoot + modular + File.separator + modular + "-client" + File.separator + "src" + File.separator +
                     "main" + File.separator + "java";
-            outputRootProvider = outputRoot + modular + File.separator + modular + "-provider" + File.separator +
-                "src" + File.separator + "main" + File.separator + "server";
+            outputRootProvider = outputRoot + modular + File.separator + modular + "-server" + File.separator +
+                "src" + File.separator + "main" + File.separator + "java";
         } else {
             outputRootApi =
                 outputRoot + modular + File.separator + "src" + File.separator +

@@ -54,12 +54,6 @@
       <artifactId>yk-common-swagger</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.yk</groupId>
-      <artifactId>yk-common-mybatis</artifactId>
-    </dependency>
-
-
     <!--<dependency>
       <groupId>com.ruoyi</groupId>
       <artifactId>yk-common-log</artifactId>

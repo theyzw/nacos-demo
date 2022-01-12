@@ -18,6 +18,12 @@
       <artifactId>yk-common-core</artifactId>
     </dependency>
 
+
+    <dependency>
+      <groupId>com.yk</groupId>
+      <artifactId>yk-common-mybatis</artifactId>
+    </dependency>
+
   </dependencies>
 
 </project>
