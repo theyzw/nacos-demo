@@ -19,4 +19,9 @@ public class ServiceNameConstants {
      * 文件服务的serviceid
      */
     public static final String FILE_SERVICE = "yk-file";
+
+    /**
+     * 计算模块的serviceid
+     */
+    public static final String CALC_SERVICE = "yk-calc";
 }

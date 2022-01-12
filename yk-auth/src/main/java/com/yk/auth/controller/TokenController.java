@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * token
- *
- * @author ruoyi
  */
 @Slf4j
 @RestController
