@@ -38,10 +38,10 @@ public class MakerInsertSelect extends Maker {
         String outputRootApi, outputRootProvider;
         if (splitApiProvider) {
             outputRootApi =
-                outputRoot + modular + File.separator + modular + "-api" + File.separator + "src" + File.separator +
+                outputRoot + modular + File.separator + modular + "-client" + File.separator + "src" + File.separator +
                     "main" + File.separator + "java";
             outputRootProvider = outputRoot + modular + File.separator + modular + "-provider" + File.separator +
-                "src" + File.separator + "main" + File.separator + "java";
+                "src" + File.separator + "main" + File.separator + "server";
         } else {
             outputRootApi =
                 outputRoot + modular + File.separator + "src" + File.separator +

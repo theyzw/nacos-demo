@@ -5,7 +5,7 @@ package $entityPackage;
 import $item;
 #end
 #end
-import com.yk.service.common.entity.BaseEntity;
+import com.yk.common.mybatis.entity.BaseEntity;
 import $dtoClassName;
 import lombok.Data;
 

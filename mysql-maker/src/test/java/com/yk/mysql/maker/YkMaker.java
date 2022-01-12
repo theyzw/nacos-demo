@@ -28,7 +28,7 @@ public class YkMaker {
         System.out.println("项目主目录:" + userDir);
 
         new MakerInsertSelect(VM_DIR)
-            .make("com.yk.demo.mysql", userDir, "mysql-demo",
+            .make("com.yk.system", userDir, "yk-system",
                 groupMap, tablePrefix, tablePostfix, true);
     }
 

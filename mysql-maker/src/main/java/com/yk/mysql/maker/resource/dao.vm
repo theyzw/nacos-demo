@@ -1,6 +1,6 @@
 package $daoPackage;
 
-import com.yk.service.common.dao.BaseDao;
+import com.yk.common.mybatis.dao.BaseDao;
 import $entityClassName;
 
 public interface $daoName extends BaseDao<$entityName> {

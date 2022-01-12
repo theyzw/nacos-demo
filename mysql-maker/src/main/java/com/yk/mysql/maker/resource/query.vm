@@ -5,7 +5,7 @@ package $queryPackage;
 import $item;
     #end
 #end
-import com.yk.service.common.query.Query;
+import com.yk.common.mybatis.query.Query;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

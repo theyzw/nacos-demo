@@ -1,6 +1,6 @@
 package $servicePackage;
 
-import com.yk.service.common.service.BaseService;
+import com.yk.common.mybatis.service.BaseService;
 import $dtoClassName;
 
 public interface $serviceName extends BaseService<$dtoName> {
