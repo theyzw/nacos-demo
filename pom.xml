@@ -254,6 +254,12 @@
                 <version>${demo.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.yk</groupId>
+                <artifactId>yk-system-client</artifactId>
+                <version>${demo.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

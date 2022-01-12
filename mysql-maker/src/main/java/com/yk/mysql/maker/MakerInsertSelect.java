@@ -74,7 +74,7 @@ public class MakerInsertSelect extends Maker {
 
                 // service
                 makeJava(data, basePackage, group, tableName, tablePrefix, tablePostfix, "service", "Service",
-                    outputRootApi, "service.vm");
+                    outputRootProvider, "service.vm");
 
                 // dao
                 makeJava(data, basePackage, group, tableName, tablePrefix, tablePostfix, "dao", "Dao",

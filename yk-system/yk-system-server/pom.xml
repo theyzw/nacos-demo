@@ -14,6 +14,11 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>com.yk</groupId>
+      <artifactId>yk-system-client</artifactId>
+    </dependency>
+
     <!-- SpringCloud Alibaba Nacos -->
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
@@ -49,20 +54,11 @@
       <artifactId>yk-common-security</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.yk</groupId>
-      <artifactId>yk-common-swagger</artifactId>
-    </dependency>
 
     <!--<dependency>
       <groupId>com.ruoyi</groupId>
       <artifactId>yk-common-log</artifactId>
     </dependency>-->
-
-    <dependency>
-      <groupId>com.yk</groupId>
-      <artifactId>yk-common-swagger</artifactId>
-    </dependency>
 
   </dependencies>
 

@@ -5,6 +5,8 @@ package $dtoPackage;
 import $item;
 #end
 #end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ApiModel("$dtoName")
 public class $dtoName implements Serializable {
 
 #if($table.columnKey)
@@ -24,6 +27,7 @@ public class $dtoName implements Serializable {
      * $table.columnKey.columnComment
      */
     #end
+    @ApiModelProperty(value = "$table.columnKey.columnComment")
     private $table.columnKey.propertyDataType $table.columnKey.propertyName;
 #end
 
@@ -33,6 +37,7 @@ public class $dtoName implements Serializable {
      * $item.columnComment
      */
     #end
+    @ApiModelProperty(value = "$item.columnComment")
     private $item.propertyDataType $item.propertyName;
 
 #end
