@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yk.system.dao.SysUserDao">
+    <resultMap id="BaseResultMap" type="com.yk.system.entity.SysUserEntity">
+        <id column="id" property="id"/>
+        <result column="userid" property="userid"/>
+        <result column="mobile" property="mobile"/>
+        <result column="user_status" property="userStatus"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user (
+            `id`,
+            `userid`,
+            `mobile`,
+            `user_status`,
+            `create_by`,
+            `update_by`,
+            `create_time`,
+            `update_time`)
+        values (
+            #{id},
+            #{userid},
+            #{mobile},
+            #{userStatus},
+            #{createBy},
+            #{updateBy},
+            #{createTime},
+            #{updateTime})
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+            `id`,
+        </if>
+        <if test="userid != null">
+            `userid`,
+        </if>
+        <if test="mobile != null">
+            `mobile`,
+        </if>
+        <if test="userStatus != null">
+            `user_status`,
+        </if>
+        <if test="createBy != null">
+            `create_by`,
+        </if>
+        <if test="updateBy != null">
+            `update_by`,
+        </if>
+        <if test="createTime != null">
+            `create_time`,
+        </if>
+        <if test="updateTime != null">
+            `update_time`,
+        </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+            #{id},
+        </if>
+        <if test="userid != null">
+            #{userid},
+        </if>
+        <if test="mobile != null">
+            #{mobile},
+        </if>
+        <if test="userStatus != null">
+            #{userStatus},
+        </if>
+        <if test="createBy != null">
+            #{createBy},
+        </if>
+        <if test="updateBy != null">
+            #{updateBy},
+        </if>
+        <if test="createTime != null">
+            #{createTime},
+        </if>
+        <if test="updateTime != null">
+            #{updateTime},
+        </if>
+        </trim>
+    </insert>
+
+    <update id="updateSelective">
+        update sys_user
+        <set>
+            <if test="userid != null">
+                `userid`=#{userid},
+            </if>
+            <if test="mobile != null">
+                `mobile`=#{mobile},
+            </if>
+            <if test="userStatus != null">
+                `user_status`=#{userStatus},
+            </if>
+            <if test="createBy != null">
+                `create_by`=#{createBy},
+            </if>
+            <if test="updateBy != null">
+                `update_by`=#{updateBy},
+            </if>
+            <if test="createTime != null">
+                `create_time`=#{createTime},
+            </if>
+            <if test="updateTime != null">
+                `update_time`=#{updateTime},
+            </if>
+        </set>
+        where `id`=#{id}
+    </update>
+
+    <select id="findList" resultMap="BaseResultMap">
+        select
+        *
+        from sys_user
+        <include refid="findListSql"/>
+        ORDER by id desc
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select
+        count(*)
+        from sys_user
+        <include refid="findListSql"/>
+    </select>
+    <sql id="findListSql">
+        <where>
+            <if test="id != null">
+                and `id`=#{id}
+            </if>
+            <if test="userid != null">
+                and `userid`=#{userid}
+            </if>
+            <if test="mobile != null">
+                and `mobile`=#{mobile}
+            </if>
+            <if test="userStatus != null">
+                and `user_status`=#{userStatus}
+            </if>
+            <if test="createBy != null">
+                and `create_by`=#{createBy}
+            </if>
+            <if test="updateBy != null">
+                and `update_by`=#{updateBy}
+            </if>
+            <if test="createTime != null">
+                and `create_time`=#{createTime}
+            </if>
+            <if test="updateTime != null">
+                and `update_time`=#{updateTime}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM sys_user
+        where `id`=#{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE
+        FROM sys_user
+        where `id`=#{id}
+    </delete>
+
+</mapper>

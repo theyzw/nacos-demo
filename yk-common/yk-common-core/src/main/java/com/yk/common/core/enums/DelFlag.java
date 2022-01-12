@@ -1,9 +1,15 @@
 package com.yk.common.core.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Maps;
+import com.yk.common.core.convert.deserializer.BaseEnumInterfaceJsonDeserializer;
+import com.yk.common.core.convert.serializer.BaseEnumInterfaceJsonSerializer;
 import java.util.Collections;
 import java.util.Map;
 
+@JsonDeserialize(using = BaseEnumInterfaceJsonDeserializer.class)
+@JsonSerialize(using = BaseEnumInterfaceJsonSerializer.class)
 public enum DelFlag implements BaseEnumInterface {
 
     NORMAL(0, "正常"),

@@ -49,7 +49,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (StringUtils.isEmpty(token)) {
             return unauthorizedResponse(exchange, "令牌不能为空");
         }
-        Claims claims = JwtUtils.parseToken(token);
+        Claims claims = null;
+        try {
+            claims = JwtUtils.parseToken(token);
+        } catch (Exception e) {
+            log.error("令牌错误");
+        }
+
         if (claims == null) {
             return unauthorizedResponse(exchange, "令牌已过期或验证不正确！");
         }

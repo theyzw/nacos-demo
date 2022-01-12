@@ -1,5 +1,6 @@
 package com.yk.common.core.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -32,31 +33,37 @@ public class Page<T> implements Serializable {
     /**
      * 页码，从1开始
      */
+    @ApiModelProperty(value = "页码，从1开始")
     private int pageNo;
 
     /**
      * 页面大小
      */
+    @ApiModelProperty(value = "页面大小")
     private int pageSize;
 
     /**
      * 当前页的数量
      */
+    @ApiModelProperty(value = "当前页的数量")
     private int size;
 
     /**
      * 总数
      */
+    @ApiModelProperty(value = "总数")
     private long total;
 
     /**
      * 总页数
      */
+    @ApiModelProperty(value = "总页数")
     private int pages;
 
     /**
      * list
      */
+    @ApiModelProperty(value = "list")
     private List<T> list;
 
     public static <T, K> Page<K> reNew(Page<T> oldPage, List<K> newList) {

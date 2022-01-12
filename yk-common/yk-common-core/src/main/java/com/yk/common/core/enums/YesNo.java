@@ -1,6 +1,10 @@
 package com.yk.common.core.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Maps;
+import com.yk.common.core.convert.deserializer.BaseEnumInterfaceJsonDeserializer;
+import com.yk.common.core.convert.serializer.BaseEnumInterfaceJsonSerializer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -11,9 +15,8 @@ import java.util.Map;
  * @author yzw
  * @date 2019/07/18 11:45
  */
-// jackson的序列化及反序列化方法
-//@JsonDeserialize(using = BaseEnumInterfaceJsonDeserializer.class)
-//@JsonSerialize(using = BaseEnumInterfaceJsonSerializer.class)
+@JsonDeserialize(using = BaseEnumInterfaceJsonDeserializer.class)
+@JsonSerialize(using = BaseEnumInterfaceJsonSerializer.class)
 public enum YesNo implements BaseEnumInterface {
 
     /** 否 */

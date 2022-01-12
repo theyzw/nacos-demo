@@ -50,15 +50,14 @@
     </dependency>
 
     <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.yk</groupId>
       <artifactId>yk-common-security</artifactId>
     </dependency>
-
-
-    <!--<dependency>
-      <groupId>com.ruoyi</groupId>
-      <artifactId>yk-common-log</artifactId>
-    </dependency>-->
 
   </dependencies>
 

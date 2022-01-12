@@ -1,6 +1,5 @@
 package com.yk.security.annotation;
 
-import com.yk.security.config.ApplicationConfig;
 import com.yk.security.feign.FeignAutoConfiguration;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -19,12 +18,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Inherited
 // 表示通过aop框架暴露该代理对象,AopContext能够访问
 @EnableAspectJAutoProxy(exposeProxy = true)
-// 指定要扫描的Mapper类的包的路径
-@MapperScan("com.yk.**.mapper")
+// 指定要扫描的Dao类的包的路径
+@MapperScan("com.yk.**.dao")
 // 开启线程异步执行
 @EnableAsync
 // 自动加载类
-@Import({ApplicationConfig.class, FeignAutoConfiguration.class})
+@Import({FeignAutoConfiguration.class})
 public @interface EnableCustomConfig {
 
 }
