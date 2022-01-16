@@ -2,9 +2,7 @@ package com.yk.gateway.filter;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
-import com.google.common.base.Joiner;
-import com.google.common.base.Joiner.MapJoiner;
-import com.google.common.base.Splitter;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.net.URI;
@@ -47,8 +45,8 @@ import reactor.core.publisher.Mono;
  * 打印请求/响应日志
  */
 @Slf4j
-@Component
-public class LogFilter implements GlobalFilter, Ordered {
+//@Component
+public class LogFilter2 implements GlobalFilter, Ordered {
 
     private static final String REQUEST_ID = "request-id";
     private static final String REQUEST_TIME = "request-time";
@@ -79,16 +77,16 @@ public class LogFilter implements GlobalFilter, Ordered {
             "Sec-Fetch-User", "Postman-Token",
             "X-Forwarded-Proto", "Sec-Fetch-Site", "SLB-ID",
             "sec-ch-ua", "X-Tag", "Transfer-Encoding", "Request-Origion", "sec-ch-ua-mobile",
-            "sec-ch-ua-platform", "content-length");
+            "sec-ch-ua-platform");
 
     /**
      * body最大打印长度
      */
     private static final int BODY_PRINT_LENGTH = 20000;
 
-//    private SerializerFeature[] features = new SerializerFeature[]{
-//        SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.DisableCircularReferenceDetect,
-//        SerializerFeature.QuoteFieldNames, SerializerFeature.WriteMapNullValue};
+    private SerializerFeature[] features = new SerializerFeature[]{
+        SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.DisableCircularReferenceDetect,
+        SerializerFeature.QuoteFieldNames, SerializerFeature.WriteMapNullValue};
 
     private final AtomicLong id = new AtomicLong(1);
 
@@ -100,17 +98,6 @@ public class LogFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        //过滤swagger
-        ServerHttpRequest request = exchange.getRequest();
-        String uri = request.getURI().toString();
-        String referer = request.getHeaders().getFirst("referer");
-        String str = uri + referer;
-        boolean isSwagger = str.contains("swagger") || str.contains("api-docs");
-        if (isSwagger) {
-            log.info("过滤swagger. uri={}, referer={}", uri, referer);
-            return chain.filter(exchange);
-        }
-
         long requestId = id.getAndIncrement();
         long requestTime = System.currentTimeMillis();
 
@@ -118,26 +105,33 @@ public class LogFilter implements GlobalFilter, Ordered {
         ServerHttpResponseDecorator decoratedResponse = decoratedResponse(exchange, requestId, requestTime);
 
         if (httpMethod == HttpMethod.GET) {
-            try {
-                requestLog(exchange.getRequest(), "", requestId, requestTime);
-            } catch (Exception e) {
-                log.error("打印请求日志失败", e);
-            }
+            requestLog(exchange.getRequest(), "", requestId, requestTime);
             return chain.filter(exchange.mutate().request(exchange.getRequest()).response(decoratedResponse).build());
         }
 
         // 获取用户传来的数据类型
+        MediaType mediaType = exchange.getRequest().getHeaders().getContentType();
         ServerRequest serverRequest = ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
-        Mono<String> modifiedBody = serverRequest.bodyToMono(String.class)
-            .flatMap(body -> {
-                try {
+
+        if (MediaType.APPLICATION_JSON.isCompatibleWith(mediaType)) {
+            // json请求
+            Mono<Object> modifiedBody = serverRequest.bodyToMono(Object.class)
+                .flatMap(body -> {
                     requestLog(exchange.getRequest(), body, requestId, requestTime);
-                } catch (Exception e) {
-                    log.error("打印请求日志失败", e);
-                }
-                return Mono.just(body);
-            });
-        return getVoidMono(exchange, chain, String.class, modifiedBody, decoratedResponse);
+                    return Mono.just(body);
+                });
+            return getVoidMono(exchange, chain, Object.class, modifiedBody, decoratedResponse);
+        } else if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(mediaType)) {
+            // 表单请求
+            Mono<String> modifiedBody = serverRequest.bodyToMono(String.class)
+                .flatMap(body -> {
+                    requestLog(exchange.getRequest(), body, requestId, requestTime);
+                    return Mono.just(body);
+                });
+            return getVoidMono(exchange, chain, String.class, modifiedBody, decoratedResponse);
+        }
+
+        return chain.filter(exchange.mutate().request(exchange.getRequest()).response(decoratedResponse).build());
     }
 
     @Override
@@ -199,56 +193,46 @@ public class LogFilter implements GlobalFilter, Ordered {
      * @param request request
      * @param body    请求的body内容
      */
-    private void requestLog(ServerHttpRequest request, String body, Long requestId, long requestTime) {
-        StringBuilder sb = new StringBuilder("curl --location --request ");
-        // 要访问的url
-        URI uri = request.getURI();
-        sb.append(request.getMethod()).append(" '").append(uri).append("' \\\n");
+    private void requestLog(ServerHttpRequest request, Object body, Long requestId, long requestTime) {
+        // 打印参数
+        Map<String, Object> map = Maps.newLinkedHashMap();
+        map.put(REQUEST_ID, requestId);
+        map.put(REQUEST_TIME, DateUtil.formatDateTime(new Date(requestTime)));
 
-        MediaType contentType = request.getHeaders().getContentType();
-        String contentTypeStr = Optional.ofNullable(contentType)
+        // 记录要访问的url
+        URI uri = request.getURI();
+        map.put(URL, uri);
+
+        map.put(METHOD, request.getMethod());
+        String contentType = Optional.ofNullable(request.getHeaders().getContentType())
             .map(MimeType::toString)
             .orElse("");
-        sb.append("--header 'Content-Type: ").append(contentTypeStr).append("' \\\n");
+        map.put(CONTENT_TYPE, contentType);
 
         // head
+        Map<String, Object> headers = Maps.newHashMap();
         request.getHeaders().forEach((k, v) -> {
             if (!HEAD_NOT_INCLUDE.contains(k)) {
-                sb.append("--header '")
-                    .append(k)
-                    .append(": ")
-                    .append(StringUtils.join(v, ","))
-                    .append("' \\\n");
+                headers.put(k, StringUtils.join(v, ","));
             }
         });
+        map.put(HEAD, headers);
 
-        String curl;
-        if (StringUtils.isNotBlank(body)) {
-            // json
-            if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)) {
-                String desensitize = desensitize(body);
-                sb.append("--data-raw '").append(desensitize).append("'");
-            } else if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
-                Splitter.on("&").splitToStream(body).forEach(x -> {
-                    String desensitize = desensitize(x);
-                    sb.append("--data-urlencode '").append(desensitize).append("' \\\n");
-                });
-            } else if (MediaType.MULTIPART_FORM_DATA.isCompatibleWith(contentType)) {
-                sb.append("--form '").append("unlog").append("'");
-            }
-            curl = StringUtils.removeEnd(sb.toString(), "\\");
-        } else {
-            curl = StringUtils.removeEnd(sb.toString(), "\\\n");
-        }
+        // cookie
+        Map<String, Object> cookies = Maps.newHashMap();
+        request.getCookies().forEach((k, v) -> {
+            cookies.put(k, StringUtils.join(v, ","));
+        });
+        map.put(COOKIES, headers);
 
-        log.info("\n[request]\nrequest-id={}, request-time={}\n{}", requestId,
-            DateUtil.formatDateTime(new Date(requestTime)), curl);
-    }
-
-    private String desensitize(String body) {
-        return PASSWORD_KEYS.stream()
-            .reduce(body, (result, next) -> result.replaceAll("(\"" + next + "\":\")(.*?)(\")",
+        // body
+        String str = (String) body;
+        str = PASSWORD_KEYS.stream()
+            .reduce(str, (result, next) -> result.replaceAll("(\"" + next + "\":\")(.*?)(\")",
                 "$1******$3"));
+        map.put(BODY, str);
+
+        log.info("[request]{}", JSON.toJSONString(map, features));
     }
 
     /**
@@ -280,13 +264,33 @@ public class LogFilter implements GlobalFilter, Ordered {
                         dataBuffer.read(content);
                         //释放掉内存
                         DataBufferUtils.release(dataBuffer);
+
+                        long costTime = System.currentTimeMillis() - requestTime;
+                        map.put(COST_TIME, costTime + "ms");
+
+                        MediaType contentType = originalResponse.getHeaders().getContentType();
+                        map.put(STATUS, originalResponse.getStatusCode().value());
+                        map.put(CONTENT_TYPE, contentType.toString());
+                        map.put(URL, exchange.getRequest().getURI());
+
                         String response = new String(content, Charset.forName("UTF-8"));
 
-                        try {
-                            responseLog(map, originalResponse, exchange, requestTime, response);
-                        } catch (Exception e) {
-                            log.error("打印响应日志失败", e);
+                        if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)
+                            && StringUtils.isNotBlank(response)) {
+                            if (response.length() >= BODY_PRINT_LENGTH) {
+                                String left = StringUtils.left(response, BODY_PRINT_LENGTH) + "...";
+                                map.put(BODY, left);
+                            } else {
+                                Object object = JSON.parse(response);
+                                map.put(BODY, object);
+                            }
                         }
+
+                        StringBuilder sb = new StringBuilder("\n[response]");
+                        map.forEach((k, v) -> {
+                            sb.append(k).append("=").append(v).append(", ");
+                        });
+                        log.info(sb.toString());
 
                         byte[] uppedContent = response.getBytes();
                         return bufferFactory.wrap(uppedContent);
@@ -297,32 +301,5 @@ public class LogFilter implements GlobalFilter, Ordered {
                 return super.writeWith(body);
             }
         };
-    }
-
-    private void responseLog(Map<String, Object> map, ServerHttpResponse originalResponse, ServerWebExchange exchange,
-                             long requestTime, String response) {
-        long costTime = System.currentTimeMillis() - requestTime;
-        map.put(COST_TIME, costTime + "ms");
-
-        MediaType contentType = originalResponse.getHeaders().getContentType();
-        map.put(STATUS, originalResponse.getStatusCode().value());
-        map.put(CONTENT_TYPE, contentType.toString());
-        map.put(URL, exchange.getRequest().getURI());
-
-        if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)
-            && StringUtils.isNotBlank(response)) {
-            String bodyKey = "\n" + BODY;
-            if (response.length() >= BODY_PRINT_LENGTH) {
-                String left = StringUtils.left(response, BODY_PRINT_LENGTH) + "...";
-                map.put(bodyKey, left);
-            } else {
-                Object object = JSON.parse(response);
-                map.put(bodyKey, object);
-            }
-        }
-
-        MapJoiner mapJoiner = Joiner.on(", ").withKeyValueSeparator("=");
-        String respStr = mapJoiner.join(map);
-        log.info("\n[response]\n{}", respStr);
     }
 }
