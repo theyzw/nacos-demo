@@ -17,6 +17,7 @@
     <module>yk-common-redis</module>
     <module>yk-common-security</module>
     <module>yk-common-mybatis</module>
+    <module>yk-common-log</module>
   </modules>
 
 
