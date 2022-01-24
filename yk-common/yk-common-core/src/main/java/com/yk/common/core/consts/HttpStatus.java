@@ -1,4 +1,4 @@
-package com.yk.common.core.constants;
+package com.yk.common.core.consts;
 
 /**
  * 返回状态码

@@ -1,8 +1,8 @@
 package com.yk.gateway.filter;
 
-import com.yk.common.core.constants.CacheConstants;
-import com.yk.common.core.constants.SecurityConstants;
-import com.yk.common.core.constants.TokenConstants;
+import com.yk.common.core.consts.CacheConsts;
+import com.yk.common.core.consts.SecurityConsts;
+import com.yk.common.core.consts.TokenConsts;
 import com.yk.common.core.utils.JwtUtils;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
@@ -72,11 +72,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
         // 设置用户信息到请求
-        addHeader(mutate, SecurityConstants.USER_KEY, userkey);
-        addHeader(mutate, SecurityConstants.DETAILS_USER_ID, userid);
-        addHeader(mutate, SecurityConstants.DETAILS_USERNAME, username);
+        addHeader(mutate, SecurityConsts.USER_KEY, userkey);
+        addHeader(mutate, SecurityConsts.DETAILS_USER_ID, userid);
+        addHeader(mutate, SecurityConsts.DETAILS_USERNAME, username);
         // 内部请求来源参数清除
-        removeHeader(mutate, SecurityConstants.FROM_SOURCE);
+        removeHeader(mutate, SecurityConsts.FROM_SOURCE);
 
         return chain.filter(exchange.mutate().request(mutate.build()).build());
     }
@@ -103,17 +103,17 @@ public class AuthFilter implements GlobalFilter, Ordered {
      * 获取缓存key
      */
     private String getTokenKey(String token) {
-        return CacheConstants.LOGIN_TOKEN_KEY + token;
+        return CacheConsts.LOGIN_TOKEN_KEY + token;
     }
 
     /**
      * 获取请求token
      */
     private String getToken(ServerHttpRequest request) {
-        String token = request.getHeaders().getFirst(TokenConstants.AUTHENTICATION);
+        String token = request.getHeaders().getFirst(TokenConsts.AUTHENTICATION);
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX)) {
-            token = token.replaceFirst(TokenConstants.PREFIX, StringUtils.EMPTY);
+        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConsts.PREFIX)) {
+            token = token.replaceFirst(TokenConsts.PREFIX, StringUtils.EMPTY);
         }
         return token;
     }

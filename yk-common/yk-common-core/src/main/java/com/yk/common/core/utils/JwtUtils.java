@@ -1,7 +1,7 @@
 package com.yk.common.core.utils;
 
-import com.yk.common.core.constants.SecurityConstants;
-import com.yk.common.core.constants.TokenConstants;
+import com.yk.common.core.consts.SecurityConsts;
+import com.yk.common.core.consts.TokenConsts;
 import com.yk.common.core.text.Convert;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class JwtUtils {
 
-    public static String secret = TokenConstants.SECRET;
+    public static String secret = TokenConsts.SECRET;
 
     /**
      * 从数据声明生成令牌
@@ -46,7 +46,7 @@ public class JwtUtils {
      */
     public static String getUserKey(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.USER_KEY);
+        return getValue(claims, SecurityConsts.USER_KEY);
     }
 
     /**
@@ -56,7 +56,7 @@ public class JwtUtils {
      * @return 用户ID
      */
     public static String getUserKey(Claims claims) {
-        return getValue(claims, SecurityConstants.USER_KEY);
+        return getValue(claims, SecurityConsts.USER_KEY);
     }
 
     /**
@@ -67,7 +67,7 @@ public class JwtUtils {
      */
     public static String getUserId(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.DETAILS_USER_ID);
+        return getValue(claims, SecurityConsts.DETAILS_USER_ID);
     }
 
     /**
@@ -77,7 +77,7 @@ public class JwtUtils {
      * @return 用户ID
      */
     public static String getUserId(Claims claims) {
-        return getValue(claims, SecurityConstants.DETAILS_USER_ID);
+        return getValue(claims, SecurityConsts.DETAILS_USER_ID);
     }
 
     /**
@@ -88,7 +88,7 @@ public class JwtUtils {
      */
     public static String getUserName(String token) {
         Claims claims = parseToken(token);
-        return getValue(claims, SecurityConstants.DETAILS_USERNAME);
+        return getValue(claims, SecurityConsts.DETAILS_USERNAME);
     }
 
     /**
@@ -98,7 +98,7 @@ public class JwtUtils {
      * @return 用户名
      */
     public static String getUserName(Claims claims) {
-        return getValue(claims, SecurityConstants.DETAILS_USERNAME);
+        return getValue(claims, SecurityConsts.DETAILS_USERNAME);
     }
 
     /**

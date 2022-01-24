@@ -1,7 +1,7 @@
 package com.yk.security.handler;
 
 import com.yk.common.core.code.ApiCode;
-import com.yk.common.core.constants.HttpStatus;
+import com.yk.common.core.consts.HttpStatus;
 import com.yk.common.core.domain.ApiResult;
 import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.exception.auth.NotPermissionException;

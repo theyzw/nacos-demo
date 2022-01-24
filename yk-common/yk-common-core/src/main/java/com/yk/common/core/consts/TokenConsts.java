@@ -1,11 +1,11 @@
-package com.yk.common.core.constants;
+package com.yk.common.core.consts;
 
 /**
  * Token的Key常量
  * 
  * @author ruoyi
  */
-public class TokenConstants
+public class TokenConsts
 {
     /**
      * 令牌自定义标识

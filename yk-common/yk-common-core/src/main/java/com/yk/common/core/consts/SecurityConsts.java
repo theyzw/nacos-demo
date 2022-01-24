@@ -1,11 +1,11 @@
-package com.yk.common.core.constants;
+package com.yk.common.core.consts;
 
 /**
  * 权限相关通用常量
  *
  * @author ruoyi
  */
-public class SecurityConstants {
+public class SecurityConsts {
 
     /**
      * 用户ID字段

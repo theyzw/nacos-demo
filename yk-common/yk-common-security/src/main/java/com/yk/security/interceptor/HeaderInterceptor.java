@@ -1,6 +1,6 @@
 package com.yk.security.interceptor;
 
-import com.yk.common.core.constants.SecurityConstants;
+import com.yk.common.core.consts.SecurityConsts;
 import com.yk.common.core.context.SecurityContextHolder;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
@@ -26,16 +26,16 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor {
             return true;
         }
 
-        SecurityContextHolder.setUserId(ServletUtils.getHeader(request, SecurityConstants.DETAILS_USER_ID));
-        SecurityContextHolder.setUserName(ServletUtils.getHeader(request, SecurityConstants.DETAILS_USERNAME));
-        SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConstants.USER_KEY));
+        SecurityContextHolder.setUserId(ServletUtils.getHeader(request, SecurityConsts.DETAILS_USER_ID));
+        SecurityContextHolder.setUserName(ServletUtils.getHeader(request, SecurityConsts.DETAILS_USERNAME));
+        SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConsts.USER_KEY));
 
         String token = SecurityUtils.getToken();
         if (StringUtils.isNotEmpty(token)) {
             LoginUser loginUser = AuthUtil.getLoginUser(token);
             if (StringUtils.isNotNull(loginUser)) {
                 AuthUtil.verifyLoginUserExpire(loginUser);
-                SecurityContextHolder.set(SecurityConstants.LOGIN_USER, loginUser);
+                SecurityContextHolder.set(SecurityConsts.LOGIN_USER, loginUser);
             }
         }
         return true;

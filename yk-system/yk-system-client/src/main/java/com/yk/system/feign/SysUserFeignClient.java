@@ -1,6 +1,6 @@
 package com.yk.system.feign;
 
-import com.yk.common.core.constants.ServiceNameConstants;
+import com.yk.common.core.consts.ServiceNameConsts;
 import com.yk.common.core.domain.ApiResult;
 import com.yk.common.core.domain.Page;
 import com.yk.system.dto.SysUserDto;
@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = ServiceNameConstants.SYSTEM_SERVICE, fallback = SysUserFeignClientFallback.class)
+@FeignClient(name = ServiceNameConsts.SYSTEM_SERVICE, fallback = SysUserFeignClientFallback.class)
 public interface SysUserFeignClient {
 
     @GetMapping("/user/page")

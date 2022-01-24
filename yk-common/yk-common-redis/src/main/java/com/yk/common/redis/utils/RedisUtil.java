@@ -142,6 +142,15 @@ public class RedisUtil {
     }
 
     /**
+     * 删除keyList
+     *
+     * @param keyList
+     */
+    public static void del(final List<String> keyList) {
+        staticInstance.redisTemplate.delete(keyList);
+    }
+
+    /**
      * 删除以prefix为前缀的key
      *
      * @param prefix 前缀

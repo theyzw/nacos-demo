@@ -1,7 +1,7 @@
 package com.yk.security.utils;
 
-import com.yk.common.core.constants.SecurityConstants;
-import com.yk.common.core.constants.TokenConstants;
+import com.yk.common.core.consts.SecurityConsts;
+import com.yk.common.core.consts.TokenConsts;
 import com.yk.common.core.context.SecurityContextHolder;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
@@ -41,7 +41,7 @@ public class SecurityUtils {
      * 获取登录用户信息
      */
     public static LoginUser getLoginUser() {
-        return SecurityContextHolder.get(SecurityConstants.LOGIN_USER, LoginUser.class);
+        return SecurityContextHolder.get(SecurityConsts.LOGIN_USER, LoginUser.class);
     }
 
     /**
@@ -56,7 +56,7 @@ public class SecurityUtils {
      */
     public static String getToken(HttpServletRequest request) {
         // 从header获取token标识
-        String token = request.getHeader(TokenConstants.AUTHENTICATION);
+        String token = request.getHeader(TokenConsts.AUTHENTICATION);
         return replaceTokenPrefix(token);
     }
 
@@ -65,8 +65,8 @@ public class SecurityUtils {
      */
     public static String replaceTokenPrefix(String token) {
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX)) {
-            token = token.replaceFirst(TokenConstants.PREFIX, "");
+        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConsts.PREFIX)) {
+            token = token.replaceFirst(TokenConsts.PREFIX, "");
         }
         return token;
     }

@@ -1,9 +1,9 @@
-package com.yk.common.core.constants;
+package com.yk.common.core.consts;
 
 /**
  * 服务名称
  */
-public class ServiceNameConstants {
+public class ServiceNameConsts {
 
     /**
      * 认证服务的serviceid

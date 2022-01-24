@@ -1,7 +1,7 @@
 package com.yk.common.core.domain;
 
 import com.yk.common.core.code.ApiCode;
-import com.yk.common.core.constants.HttpStatus;
+import com.yk.common.core.consts.HttpStatus;
 import com.yk.common.core.enums.EnvType;
 import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.utils.collection.MapBuilder;

@@ -2,8 +2,8 @@ package com.yk.security.service;
 
 import cn.hutool.core.lang.UUID;
 import com.google.common.collect.Maps;
-import com.yk.common.core.constants.CacheConstants;
-import com.yk.common.core.constants.SecurityConstants;
+import com.yk.common.core.consts.CacheConsts;
+import com.yk.common.core.consts.SecurityConsts;
 import com.yk.common.core.utils.IpUtils;
 import com.yk.common.core.utils.JwtUtils;
 import com.yk.common.core.utils.ServletUtils;
@@ -11,7 +11,6 @@ import com.yk.common.core.utils.StringUtils;
 import com.yk.common.redis.utils.RedisUtil;
 import com.yk.security.model.LoginUser;
 import com.yk.security.utils.SecurityUtils;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +28,11 @@ public class TokenService {
 
     protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
-    private final static long expireTime = CacheConstants.EXPIRATION;
+    private final static long expireTime = CacheConsts.EXPIRATION;
 
-    private final static String ACCESS_TOKEN = CacheConstants.LOGIN_TOKEN_KEY;
+    private final static String ACCESS_TOKEN = CacheConsts.LOGIN_TOKEN_KEY;
 
-    private final static Long MILLIS_MINUTE_TEN = CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
+    private final static Long MILLIS_MINUTE_TEN = CacheConsts.REFRESH_TIME * MILLIS_MINUTE;
 
     /**
      * 创建令牌
@@ -47,9 +46,9 @@ public class TokenService {
 
         // Jwt存储信息
         Map<String, Object> claimsMap = Maps.newHashMap();
-        claimsMap.put(SecurityConstants.USER_KEY, token);
-        claimsMap.put(SecurityConstants.DETAILS_USER_ID, loginUser.getUserid());
-        claimsMap.put(SecurityConstants.DETAILS_USERNAME, loginUser.getUsername());
+        claimsMap.put(SecurityConsts.USER_KEY, token);
+        claimsMap.put(SecurityConsts.DETAILS_USER_ID, loginUser.getUserid());
+        claimsMap.put(SecurityConsts.DETAILS_USERNAME, loginUser.getUsername());
 
         // 接口返回信息
         Map<String, Object> rspMap = Maps.newHashMap();
