@@ -1,5 +1,6 @@
 package com.yk.common.core.domain;
 
+import com.github.pagehelper.Page;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Collections;
@@ -9,25 +10,34 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Page<T> implements Serializable {
+public class PageResult<T> implements Serializable {
 
-    public Page() {
+    public PageResult() {
         this.pageNo = 1;
         this.pageSize = 20;
         this.list = Collections.emptyList();
     }
 
-    public Page(Integer pageNo, Integer pageSize) {
+    public PageResult(Integer pageNo, Integer pageSize) {
         this.pageNo = pageNo;
         this.pageSize = pageSize;
     }
 
-    public Page(int pageNo, int pageSize, int size, long total, int pages) {
+    public PageResult(int pageNo, int pageSize, int size, long total, int pages) {
         this.pageNo = pageNo;
         this.pageSize = pageSize;
         this.size = size;
         this.total = total;
         this.pages = pages;
+    }
+
+    public PageResult(Page page) {
+        this.pageNo = page.getPageNum();
+        this.pageSize = page.getPageSize();
+        this.size = page.size();
+        this.total = page.getTotal();
+        this.pages = page.getPages();
+        this.list = page.getResult();
     }
 
     /**
@@ -66,8 +76,8 @@ public class Page<T> implements Serializable {
     @ApiModelProperty(value = "list")
     private List<T> list;
 
-    public static <T, K> Page<K> reNew(Page<T> oldPage, List<K> newList) {
-        Page newPage = new Page<>(oldPage.getPageNo(), oldPage.getPageSize(), oldPage.getSize(), oldPage.getTotal(),
+    public static <T, K> PageResult<K> reNew(PageResult<T> oldPage, List<K> newList) {
+        PageResult newPage = new PageResult<>(oldPage.getPageNo(), oldPage.getPageSize(), oldPage.getSize(), oldPage.getTotal(),
             oldPage.getPages());
         newPage.setList(newList);
         return newPage;

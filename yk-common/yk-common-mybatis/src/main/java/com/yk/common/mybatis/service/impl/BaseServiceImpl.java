@@ -1,7 +1,8 @@
 package com.yk.common.mybatis.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.yk.common.core.domain.Page;
+import com.yk.common.core.domain.PageResult;
+import com.yk.common.core.utils.PageUtils;
 import com.yk.common.mybatis.dao.BaseDao;
 import com.yk.common.mybatis.entity.BaseEntity;
 import com.yk.common.mybatis.query.Query;
@@ -136,22 +137,23 @@ public class BaseServiceImpl<T, D extends BaseDao<E>, E extends BaseEntity<T>> i
     }
 
     @Override
-    public Page<T> findPage(Query query, int pageNo, int pageSize) {
+    public PageResult<T> findPage(Query query, int pageNo, int pageSize) {
         return findPage(query, pageNo, pageSize, null);
     }
 
     @Override
-    public Page<T> findPage(Query query, int pageNo, int pageSize, String order) {
-        pageNo = Math.max(pageNo, 1);
-        pageSize = Math.max(pageSize, 1);
-
-        PageHelper.startPage(pageNo, pageSize).setOrderBy(order);
+    public PageResult<T> findPage(Query query, int pageNo, int pageSize, String order) {
+//        pageNo = Math.max(pageNo, 1);
+//        pageSize = Math.max(pageSize, 1);
+//
+//        PageHelper.startPage(pageNo, pageSize).setOrderBy(order);
+        PageUtils.startPage(pageNo, pageSize, order);
         List<E> list = dao.findList(query);
         com.github.pagehelper.Page<E> result = (com.github.pagehelper.Page<E>) list;
 
         List<T> collect = result.stream().map(en -> en.convert(dtoClz)).collect(Collectors.toList());
 
-        return new Page<>(result.getPageNum(), result.getPageSize(), result.size(),
+        return new PageResult<>(result.getPageNum(), result.getPageSize(), result.size(),
             result.getTotal(), result.getPages(), collect);
     }
 

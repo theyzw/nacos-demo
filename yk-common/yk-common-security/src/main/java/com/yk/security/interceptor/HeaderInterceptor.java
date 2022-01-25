@@ -5,7 +5,7 @@ import com.yk.common.core.context.SecurityContextHolder;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
 import com.yk.security.auth.AuthUtil;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 import com.yk.security.utils.SecurityUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

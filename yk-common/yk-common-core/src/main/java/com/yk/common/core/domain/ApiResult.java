@@ -1,5 +1,6 @@
 package com.yk.common.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yk.common.core.code.ApiCode;
 import com.yk.common.core.consts.HttpStatus;
 import com.yk.common.core.enums.EnvType;
@@ -107,6 +108,24 @@ public class ApiResult<T> implements Serializable {
             return new ApiResult<>(code, null, null);
         }
         return new ApiResult<>(code, null, debug);
+    }
+
+    @JsonIgnore
+    public T getSuccessData() {
+        if (code != ApiCode.SUCCESS.getCode() || data == null) {
+            return null;
+        }
+        return data;
+    }
+
+    @JsonIgnore
+    public boolean isOk() {
+        return code == ApiCode.SUCCESS.getCode();
+    }
+
+    @JsonIgnore
+    public boolean isFail() {
+        return !isOk();
     }
 
 }

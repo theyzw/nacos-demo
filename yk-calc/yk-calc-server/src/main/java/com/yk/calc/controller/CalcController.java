@@ -2,9 +2,6 @@ package com.yk.calc.controller;
 
 import com.yk.calc.service.CalcService;
 import com.yk.common.core.domain.ApiResult;
-import com.yk.common.core.domain.Page;
-import com.yk.system.dto.SysUserDto;
-import com.yk.system.feign.SysUserFeignClient;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

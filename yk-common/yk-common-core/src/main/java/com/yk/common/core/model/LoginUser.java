@@ -1,4 +1,4 @@
-package com.yk.security.model;
+package com.yk.common.core.model;
 
 import java.io.Serializable;
 import java.util.Set;

@@ -2,7 +2,7 @@ package com.yk.auth.service;
 
 import com.yk.common.core.exception.ServiceException;
 import com.yk.common.core.utils.StringUtils;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 import org.springframework.stereotype.Component;
 
 /**

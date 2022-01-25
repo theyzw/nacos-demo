@@ -9,7 +9,7 @@ import com.yk.security.annotation.Logical;
 import com.yk.security.annotation.RequiresLogin;
 import com.yk.security.annotation.RequiresPermissions;
 import com.yk.security.annotation.RequiresRoles;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 import com.yk.security.service.TokenService;
 import com.yk.security.utils.SecurityUtils;
 import java.util.Collection;

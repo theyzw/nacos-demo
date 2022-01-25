@@ -31,7 +31,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
 
-    // 排除过滤的 uri 地址，nacos自行添加
+    // 排除过滤的 uri 地址，nacos中配置
     @Autowired
     private IgnoreWhiteProperties ignoreWhite;
 
@@ -45,6 +45,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
         if (StringUtils.matches(url, ignoreWhite.getWhites())) {
             return chain.filter(exchange);
         }
+
         String token = getToken(request);
         if (StringUtils.isEmpty(token)) {
             return unauthorizedResponse(exchange, "令牌不能为空");
@@ -60,9 +61,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
             return unauthorizedResponse(exchange, "令牌已过期或验证不正确！");
         }
 
-        String userkey = JwtUtils.getUserKey(claims);
-        boolean islogin = RedisUtil.hasKey(getTokenKey(userkey));
-        if (!islogin) {
+        String userKey = JwtUtils.getUserKey(claims);
+        boolean isLogin = RedisUtil.hasKey(getTokenKey(userKey));
+        if (!isLogin) {
             return unauthorizedResponse(exchange, "登录状态已过期");
         }
         String userid = JwtUtils.getUserId(claims);
@@ -72,10 +73,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
         }
 
         // 设置用户信息到请求
-        addHeader(mutate, SecurityConsts.USER_KEY, userkey);
+        addHeader(mutate, SecurityConsts.USER_KEY, userKey);
         addHeader(mutate, SecurityConsts.DETAILS_USER_ID, userid);
         addHeader(mutate, SecurityConsts.DETAILS_USERNAME, username);
-        // 内部请求来源参数清除
+        // 内部请求来源参数清除（防止外部直接拼header调用内部接口，只允许通过feign调用）
         removeHeader(mutate, SecurityConsts.FROM_SOURCE);
 
         return chain.filter(exchange.mutate().request(mutate.build()).build());

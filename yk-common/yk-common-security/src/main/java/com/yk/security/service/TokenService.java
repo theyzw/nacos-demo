@@ -9,7 +9,7 @@ import com.yk.common.core.utils.JwtUtils;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
 import com.yk.common.redis.utils.RedisUtil;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 import com.yk.security.utils.SecurityUtils;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;

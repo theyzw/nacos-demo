@@ -2,7 +2,7 @@ package com.yk.security.auth;
 
 import com.yk.security.annotation.RequiresPermissions;
 import com.yk.security.annotation.RequiresRoles;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 
 /**
  * Token 权限验证工具类

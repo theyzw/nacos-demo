@@ -1,7 +1,7 @@
 package com.yk.system.controller;
 
 import com.yk.common.core.domain.ApiResult;
-import com.yk.common.core.domain.Page;
+import com.yk.common.core.domain.PageResult;
 import com.yk.system.dto.SysUserDto;
 import com.yk.system.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -38,9 +38,9 @@ public class SysUserController {
         @ApiImplicitParam(name = "pageSize", value = "pageSize", required = true, dataType = "int", paramType = "query")
     })
     @GetMapping("page")
-    public ApiResult<Page<SysUserDto>> page(@NotNull(message = "pageNo不能为空") Integer pageNo,
-                                            @NotNull(message = "pageSize不能为空") Integer pageSize) {
-        Page<SysUserDto> page = sysUserService.findPage(null, pageNo, pageSize);
+    public ApiResult<PageResult<SysUserDto>> page(@NotNull(message = "pageNo不能为空") Integer pageNo,
+                                                  @NotNull(message = "pageSize不能为空") Integer pageSize) {
+        PageResult<SysUserDto> page = sysUserService.findPage(null, pageNo, pageSize);
 
         return ApiResult.ok(page);
     }

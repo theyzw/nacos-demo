@@ -1,6 +1,6 @@
 package com.yk.common.mybatis.service;
 
-import com.yk.common.core.domain.Page;
+import com.yk.common.core.domain.PageResult;
 import com.yk.common.mybatis.query.Query;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +27,9 @@ public interface BaseService<T> {
 
     List<T> findList(Query query, String order);
 
-    Page<T> findPage(Query query, int pageNo, int pageSize);
+    PageResult<T> findPage(Query query, int pageNo, int pageSize);
 
-    Page<T> findPage(Query query, int pageNo, int pageSize, String order);
+    PageResult<T> findPage(Query query, int pageNo, int pageSize, String order);
 
     int deleteByPrimaryKey(Long id);
 

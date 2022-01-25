@@ -5,7 +5,7 @@ import com.yk.common.core.consts.TokenConsts;
 import com.yk.common.core.context.SecurityContextHolder;
 import com.yk.common.core.utils.ServletUtils;
 import com.yk.common.core.utils.StringUtils;
-import com.yk.security.model.LoginUser;
+import com.yk.common.core.model.LoginUser;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
