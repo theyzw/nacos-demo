@@ -16,13 +16,19 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 主要源码 org.springframework.web.servlet.mvc.method.annotation .AbstractMessageConverterMethodArgumentResolver.readWithMessageConverters()
- * 200是寻找，204是处理 com.fasterxml.jackson.databind.deser.DeserializerCache  326:寻找带有注解的 ，367:根据类型使用自带反序列化
- * org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter 163：寻找
+ * 主要源码
  * <p>
- * 使用方式 在 枚举类反序列化注解上 加入 即可 如：
+ * package: org.springframework.web.servlet.mvc.method.annotation
+ * <p>
+ * class.method：AbstractMessageConverterMethodArgumentResolver.readWithMessageConverters()
+ * <p>
+ * com.fasterxml.jackson.databind.deser.DeserializerCache
+ * <p>
+ * org.springframework.http.converter.json.AbstractJackson2HttpMessageConverte
+ * <p>
+ * 使用方式： 在枚举类反序列化注解上加入即可。如：
  *
- * @JsonDeserialize(using = BaseEnumInterfaceJsonDesSerializer.class)
+ * @JsonDeserialize(using = BaseEnumInterfaceJsonDeserializer.class)
  */
 @Slf4j
 public class BaseEnumInterfaceJsonDeserializer extends JsonDeserializer<Object> {
@@ -41,12 +47,14 @@ public class BaseEnumInterfaceJsonDeserializer extends JsonDeserializer<Object> 
             declaredFields.setAccessible(true);
             // 每次调用此反序列化方法，会将字段名和使用bean的映射关系缓存，然后遍历Bean，找到字段名对应的枚举类型
             // 如果同一个字段名，例如a，在不同的bean里对应了不同的枚举（a->aEnum, a->bEnum)，此时缓存里可能存了多个对应关系
-            // 下次反序列化时可能不能取到正确的枚举类型，所以不允许同一个字段名对应多个枚举类型
+            // 下次反序列化时可能不能取到正确的枚举类型，所以：
+            // ** 不允许同一个字段名对应多个枚举类型 **
             DeserializerCache deserializerCache = (DeserializerCache) declaredFields.get(ctx);
 
             // 反射拿取_cachedDeserializers
             Field cachedDeserializers = DeserializerCache.class.getDeclaredField("_cachedDeserializers");
             cachedDeserializers.setAccessible(true);
+            // 新版jackson DeserializerCache._cachedDeserializers类型为LRUMap
             LRUMap lruMap = (LRUMap) cachedDeserializers.get(deserializerCache);
 
             Field mapField = LRUMap.class.getDeclaredField("_map");
